@@ -4,12 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>IP Finder</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body, html {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+    #intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    #intro img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    #main-content {
+      display: none;
+      text-align: center;
+      padding-top: 20%;
+    }
+    #ip {
+      font-size: 2rem;
+      color: #0077cc;
+    }
+  </style>
 </head>
 <body>
-  <h1>IP Address:</h1>
-  <p id="ip">Loading (definetely NOT hacking)...</p>
+
+  <!-- Glitch Intro -->
+  <div id="intro">
+    <img src="https://www.gifcen.com/wp-content/uploads/2022/03/glitch-gif-2.gif" alt="glitch">
+  </div>
+
+  <!-- Actual Content -->
+  <div id="main-content">
+    <h1>IP Address:</h1>
+    <p id="ip">Loading (definitely NOT hacking)...</p>
+  </div>
 
   <script>
+    // Switch from glitch to main content after 5 seconds
+    setTimeout(() => {
+      document.getElementById('intro').style.display = 'none';
+      document.getElementById('main-content').style.display = 'block';
+    }, 5000);
+
+    // Fetch IP
     fetch('https://api.ipify.org?format=json')
       .then(res => res.json())
       .then(data => {
@@ -19,5 +72,6 @@
         document.getElementById('ip').textContent = 'Could not load IP';
       });
   </script>
+
 </body>
 </html>
