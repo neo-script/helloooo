@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>helloooo game</title>
+  <title>IP Finder</title>
   <style>
     * {
       margin: 0; padding: 0; box-sizing: border-box;
@@ -12,30 +12,45 @@
       width: 100%; height: 100%;
       font-family: 'Courier New', monospace;
       background-color: black;
-      color: white;
+      color: #00ffcc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      flex-direction: column;
     }
     #intro {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
+      background: black;
       z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: black;
+      flex-direction: column;
     }
     #intro img {
       width: 100%; height: 100%;
       object-fit: cover;
+      position: absolute;
+      top: 0; left: 0;
+      z-index: -1;
+      opacity: 0.8;
+    }
+    .message {
+      font-size: 1.5rem;
+      white-space: pre-wrap;
+      margin: 5px 0;
+      min-height: 1.8em;
     }
     #main-content {
       display: none;
-      height: 100vh;
-      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
+      height: 100vh;
+      color: #00ffcc;
     }
     h1 {
       font-size: 2em;
@@ -43,40 +58,70 @@
     }
     #ip {
       font-size: 1.5em;
-      color: #00ffcc;
     }
   </style>
 </head>
 <body>
 
-  <!-- Glitch Intro -->
   <div id="intro">
     <img src="https://64.media.tumblr.com/95f72b79d333f71c2a33e086b7e47233/tumblr_nejjrr2ePN1spl4axo1_1280.gif" alt="glitch" />
+    <div id="messages">
+      <div class="message" id="msg1"></div>
+      <div class="message" id="msg2"></div>
+      <div class="message" id="msg3"></div>
+    </div>
   </div>
 
-  <!-- Actual Content -->
   <div id="main-content">
     <h1>IP Address:</h1>
     <p id="ip">Loading (definitely NOT hacking)...</p>
   </div>
 
-  <script>
-    // After 5 seconds hide the glitch intro and show main content
+<script>
+  const messages = [
+    '> SYSTEM BREACH DETECTED',
+    '> TRACE INITIATED...',
+    '> ACCESS GRANTED'
+  ];
+  
+  function typeWriter(text, element, delay = 50) {
+    return new Promise((resolve) => {
+      let i = 0;
+      element.textContent = '';
+      const interval = setInterval(() => {
+        element.textContent += text.charAt(i);
+        i++;
+        if (i === text.length) {
+          clearInterval(interval);
+          setTimeout(resolve, 800); // pause a bit after typing
+        }
+      }, delay);
+    });
+  }
+  
+  async function showMessages() {
+    for (let i = 0; i < messages.length; i++) {
+      await typeWriter(messages[i], document.getElementById('msg' + (i+1)));
+    }
+    // After messages, hide intro and show main content
     setTimeout(() => {
       document.getElementById('intro').style.display = 'none';
       document.getElementById('main-content').style.display = 'flex';
-    }, 5000);
+    }, 800);
+  }
+  
+  showMessages();
 
-    // Fetch IP and display
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('ip').textContent = data.ip;
-      })
-      .catch(() => {
-        document.getElementById('ip').textContent = 'Could not load IP';
-      });
-  </script>
+  // Fetch IP and display
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('ip').textContent = data.ip;
+    })
+    .catch(() => {
+      document.getElementById('ip').textContent = 'Could not load IP';
+    });
+</script>
 
 </body>
 </html>
