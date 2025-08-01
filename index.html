@@ -93,7 +93,7 @@
         i++;
         if (i === text.length) {
           clearInterval(interval);
-          setTimeout(resolve, 800); // pause a bit after typing
+          setTimeout(resolve, 800);
         }
       }, delay);
     });
@@ -103,7 +103,6 @@
     for (let i = 0; i < messages.length; i++) {
       await typeWriter(messages[i], document.getElementById('msg' + (i+1)));
     }
-    // After messages, hide intro and show main content
     setTimeout(() => {
       document.getElementById('intro').style.display = 'none';
       document.getElementById('main-content').style.display = 'flex';
@@ -111,15 +110,13 @@
   }
   
   showMessages();
-
-  // Fetch IP and display
   fetch('https://api.ipify.org?format=json')
     .then(res => res.json())
     .then(data => {
       document.getElementById('ip').textContent = data.ip;
     })
     .catch(() => {
-      document.getElementById('ip').textContent = 'Could not load IP';
+      document.getElementById('ip').textContent = 'Access Denied';
     });
 </script>
 
